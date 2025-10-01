@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
  * @author FRANCO
  */
 public class Conexion {
-
     private String url;
     private String usuario;
     private String password;
@@ -26,6 +25,7 @@ public class Conexion {
       this.usuario=usuario;
       this.password=password;
     }
+
     
     public Connection buscarConexion(){
       if (conexion == null) {

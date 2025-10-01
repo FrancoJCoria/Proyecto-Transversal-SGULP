@@ -8,6 +8,6 @@ package Persistencia;
  *
  * @author FRANCO
  */
-public class conexion {
+public class Conexion {
     
 }

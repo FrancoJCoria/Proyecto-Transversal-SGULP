@@ -36,11 +36,12 @@ public class Conexion {
 
                 //Conexion con la bd - tambien requiere de un try catch si ocurre un error al intentar conectarse a la base de datos ej: url incorrecta, usuario o contraseña invalidos, base de datos apagada
                 Connection conexion = DriverManager.getConnection(url, usuario, password);
+                return conexion;
 
             } catch (ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Error al cargar Driver " + ex.getMessage());
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al cargar Driver " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al conectarse a la bd " + e.getMessage());
             }
             
             

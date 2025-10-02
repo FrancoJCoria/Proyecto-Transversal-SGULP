@@ -4,11 +4,11 @@
 
 package Vista;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import Modelo.Alumno;
+import Persistencia.Conexion;
+import Persistencia.alumnoData;
+import java.time.LocalDate;
+
 
 /**
  *
@@ -18,30 +18,13 @@ public class ProyectoTransversalSG {
 
     public static void main(String[] args) {
    
-            //Agregar un empleado
-            //String sql= "INSERT INTO empleado(dni,apellido,nombre,acceso,estado) VALUES(?,?,?,?,?)";
-            //Prepara la sentencia SQL en la base de datos / Crea el comando SQL
-            //PreparedStatement ps=conexion.prepareStatement(sql);
-            //Asignamos los datos
-            //ps.setInt(1, 45801072);
-            //ps.setString(2,"Coria");
-            //ps.setString(3, "Franco");
-            //ps.setInt(4, 1);
-            //ps.setBoolean(5, true);
-            //Ejecuta el comando SQL
-            //ps.executeUpdate();
-            
-            //Actualizar un empleado
-            //String sql2="UPDATE empleado SET nombre = 'Franquito' WHERE dni=45801072";
-            //PreparedStatement ps2 = conexion.prepareStatement(sql2);
-            //ps2.executeUpdate();
-            
-            
-            //Eliminar fisicamente un empleado
-            //String sql3="DELETE FROM empleado WHERE dni=45801072";
-            //PreparedStatement ps3 = conexion.prepareStatement(sql3);
-            //ps3.executeUpdate();
-
-         
+         Alumno nuevoAlumno=new Alumno(-1,45801072,"Coria","Franco",LocalDate.of(2004,06,07),true);
+         Conexion miConexion =new Conexion("jdbc:mariadb://localhost/gp7universidad","root","");
+         alumnoData alumnoData = new alumnoData(miConexion);
+         //alumnoData.guardarAlumno(nuevoAlumno);
+         //alumnoData.actualizarAlumno(1, "dni", 45801072);
+          //alumnoData.buscarAlumno(1);
+          //alumnoData.DarBajaAlumno(1);
+          //alumnoData.eliminarAlumno(1);
     }
 }

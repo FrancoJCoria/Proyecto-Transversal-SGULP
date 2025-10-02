@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -43,7 +41,7 @@ public class alumnoData {
     }
 
     public void buscarAlumno(int id) {
-        String sql = "SELECT * FROM alumno WHERE dni = ?";
+        String sql = "SELECT * FROM alumno WHERE idAlumno = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -67,30 +65,55 @@ public class alumnoData {
             throw new IllegalArgumentException("Columna no permitida");
         }
 
-        String sql = "UPDATE FROM alumno SET " + columna + "=? WHERE idAlumno=?";
+        String sql = "UPDATE alumno SET " + columna + "=? WHERE idAlumno=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             if (dato instanceof String) {
                 ps.setString(1, (String) dato);
-                ps.setInt(2, id);
+
             } else if (dato instanceof Integer) {
                 ps.setInt(1, (int) dato);
-                ps.setInt(2, id);
+
             } else if (dato instanceof LocalDate) {
                 ps.setDate(1, (Date) dato);
-                ps.setInt(2, id);
+
             } else if (dato instanceof Boolean) {
                 ps.setBoolean(1, (boolean) dato);
-                ps.setInt(2, id);
+
+            } else {
+                throw new IllegalArgumentException(" Tipo de dato no soportado");
             }
+            ps.setInt(2, id);
+            ps.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(alumnoData.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
         }
 
     }
-    
-    public void DarBajaAlumno(){
-    
+
+    public void DarBajaAlumno(int id) {
+        String sql = "UPDATE alumno SET estado=? WHERE idAlumno=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1, false);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+        }
+    }
+
+    public void eliminarAlumno(int id) {
+        String sql = "DELETE FROM alumno WHERE idAlumno=?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+        }
+
     }
 }

@@ -4,55 +4,53 @@
  */
 package Persistencia;
 
-import Modelo.Alumno;
+
+import Modelo.Materia;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author FRANCO
  */
-public class alumnoData {
-
+public class materiaData {
+    
     private Connection con = null;
 
-    public alumnoData(Conexion conexion) {
-        this.con = conexion.buscarConexion();
+    public materiaData(Conexion conexion) {
+        this.con=conexion.buscarConexion();
     }
-
-    public void guardarAlumno(Alumno a) {
-        String sql = "INSERT INTO alumno(dni,apellido,nombre,fechaNacimiento,estado) VALUES(?,?,?,?,?)";
+    
+     public void guardarMateria(Materia m) {
+        String sql = "INSERT INTO materia(nombre,año,estado) VALUES(?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, a.getDni());
-            ps.setString(2, a.getApellido());
-            ps.setString(3, a.getNombre());
-            ps.setDate(4, Date.valueOf(a.getFechaNacimiento()));
-            ps.setBoolean(5, a.isEstado());
+            
+            ps.setString(1, m.getNombre());
+            ps.setInt(2,m.getAño());
+            ps.setBoolean(3, m.isEstado());
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
         }
     }
 
-    public void buscarAlumno(int id) {
-        String sql = "SELECT * FROM alumno WHERE idAlumno = ?";
+    public void buscarMateria(int id) {
+        String sql = "SELECT * FROM materia WHERE idMateria = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                System.out.print(" ID " + rs.getInt("idAlumno"));
-                System.out.print(" Dni " + rs.getInt("dni"));
-                System.out.print(" Apellido " + rs.getString("Apellido"));
-                System.out.print(" Nombre " + rs.getString("Nombre"));
-                System.out.println(" Fecha Nac " + rs.getDate("fechaNacimiento"));
+                System.out.print(" ID " + rs.getInt("idMateria"));
+                System.out.print(" Nombre " + rs.getString("nombre"));
+                System.out.print(" Año " + rs.getInt("año"));
+                System.out.print(" Estado " + rs.getBoolean("estado"));
+               
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
@@ -60,12 +58,12 @@ public class alumnoData {
 
     }
 
-    public void actualizarAlumno(int id, String columna, Object dato) {
-        if (!columna.equals("dni") && !columna.equals("apellido") && !columna.equals("nombre") && !columna.equals("fechaNacimiento") && !columna.equals("estado")) {
+    public void actualizarMateria(int id, String columna, Object dato) {
+        if (!columna.equals("nombre") && !columna.equals("año") && !columna.equals("estado")) {
             throw new IllegalArgumentException("Columna no permitida");
         }
 
-        String sql = "UPDATE alumno SET " + columna + "=? WHERE idAlumno=?";
+        String sql = "UPDATE materia SET " + columna + "=? WHERE idMateria=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             if (dato instanceof String) {
@@ -74,9 +72,7 @@ public class alumnoData {
             } else if (dato instanceof Integer) {
                 ps.setInt(1, (int) dato);
 
-            } else if (dato instanceof LocalDate) {
-                ps.setDate(1, (Date) dato);
-
+            
             } else if (dato instanceof Boolean) {
                 ps.setBoolean(1, (boolean) dato);
 
@@ -92,8 +88,8 @@ public class alumnoData {
 
     }
 
-    public void DarBajaAlumno(int id) {
-        String sql = "UPDATE alumno SET estado=? WHERE idAlumno=?";
+    public void DarBajaMateria(int id) {
+        String sql = "UPDATE materia SET estado=? WHERE idMateria=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, false);
@@ -104,8 +100,8 @@ public class alumnoData {
         }
     }
 
-    public void eliminarAlumno(int id) {
-        String sql = "DELETE FROM alumno WHERE idAlumno=?";
+    public void eliminarMateria(int id) {
+        String sql = "DELETE FROM materia WHERE idMateria=?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -117,3 +113,8 @@ public class alumnoData {
 
     }
 }
+
+    
+    
+    
+

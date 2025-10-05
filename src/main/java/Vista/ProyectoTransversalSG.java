@@ -17,6 +17,13 @@ import java.time.LocalDate;
 public class ProyectoTransversalSG {
 
     public static void main(String[] args) {
+        
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MenuPrincipal().setVisible(true);
+            }
+        });
 
         Alumno nuevoAlumno = new Alumno(-1, 45801072, "Coria", "Franco", LocalDate.of(2004, 06, 07), true);
         Conexion miConexion = new Conexion("jdbc:mariadb://localhost/gp7universidad", "root", "");
@@ -33,5 +40,6 @@ public class ProyectoTransversalSG {
         //materiaData.buscarMateria(1);
         //materiaData.DarBajaMateria(1);
         //materiaData.eliminarMateria(1);
+        
     }
 }

@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import javax.swing.JInternalFrame;
+
 /**
  *
  * @author LaMaquina
@@ -18,6 +20,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
         initComponents();
     }
+    
+    public void abrirInternal(JInternalFrame nuevo){
+        for (JInternalFrame frame : Escritorio.getAllFrames()) {
+            frame.dispose();
+        }
+          Escritorio.add(nuevo);
+        nuevo.setVisible(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,9 +41,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         Alumnos = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         Materias = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,25 +51,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Escritorio.setLayout(EscritorioLayout);
         EscritorioLayout.setHorizontalGroup(
             EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
         EscritorioLayout.setVerticalGroup(
             EscritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 534, Short.MAX_VALUE)
         );
 
         Alumnos.setText("Alumnos");
-
-        jMenuItem1.setText("itemAlumnos");
-        Alumnos.add(jMenuItem1);
-
+        Alumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AlumnosMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(Alumnos);
 
         Materias.setText("Materias");
-
-        jMenuItem2.setText("itemMaterias");
-        Materias.add(jMenuItem2);
-
+        Materias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MateriasMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(Materias);
 
         setJMenuBar(jMenuBar1);
@@ -79,6 +89,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlumnosMouseClicked
+        VistaAlumno va = new VistaAlumno();
+        abrirInternal(va);
+    }//GEN-LAST:event_AlumnosMouseClicked
+
+    private void MateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MateriasMouseClicked
+        VistaMateria vm = new VistaMateria();
+        abrirInternal (vm);
+    }//GEN-LAST:event_MateriasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -105,13 +125,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new MenuPrincipal().setVisible(true));
     }
     
-    private void itemAlumnosActionPerformed(java.awt.event.ActionEvent evt){
+    
+    private void AlumnosActionPerformed(java.awt.event.ActionEvent evt){
         VistaAlumno va = new VistaAlumno();
         Escritorio.add(va);
         va.setVisible(true);
     }
     
-    private void itemMateriaActionPerformed(java.awt.event.ActionEvent evt){
+    private void MateriaActionPerformed(java.awt.event.ActionEvent evt){
         VistaMateria vm=new VistaMateria();
         Escritorio.add(vm);
         vm.setVisible(true);
@@ -122,7 +143,5 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane Escritorio;
     private javax.swing.JMenu Materias;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     // End of variables declaration//GEN-END:variables
 }

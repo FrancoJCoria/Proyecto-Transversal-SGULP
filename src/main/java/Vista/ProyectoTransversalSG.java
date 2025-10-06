@@ -25,7 +25,8 @@ public class ProyectoTransversalSG {
         });
 
         Alumno nuevoAlumno = new Alumno(-1, 45801072, "Coria", "Franco", LocalDate.of(2004, 06, 07), true);
-        
+        alumnoData alumnoData =new alumnoData();
+        alumnoData.guardarAlumno(nuevoAlumno);
       
         
     }

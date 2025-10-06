@@ -27,6 +27,10 @@ public class Alumno {
         this.estado = estado;
     }
 
+    public Alumno() {
+       
+    }
+
     public int getIdAlumno() {
         return idAlumno;
     }

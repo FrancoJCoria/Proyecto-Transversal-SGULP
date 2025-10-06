@@ -14,20 +14,17 @@ import javax.swing.JOptionPane;
  * @author FRANCO
  */
 public class Conexion {
-    private String url;
-    private String usuario;
-    private String password;
+    private static final String url="jdbc:mariadb://localhost/gp7universidad";
+    private static final String usuario="root";
+    private static final String password="";
 
     private static Connection conexion = null;
 
-    public Conexion(String url, String usuario, String password) {
-      this.url=url;
-      this.usuario=usuario;
-      this.password=password;
+    private Conexion() {
     }
 
     
-    public Connection buscarConexion(){
+    public static Connection buscarConexion(){
       if (conexion == null) {
 
             //Requiere de un try catch porque puede lanzar una excepcion. si la clase que le indico en este caso el driver no existe en el classpath o no puede cargarse larga la excepcion
@@ -35,8 +32,8 @@ public class Conexion {
                 Class.forName("org.mariadb.jdbc.Driver"); //cargar la clase y ejecuta su bloque estatico que ya registra el driver en drivermanager
 
                 //Conexion con la bd - tambien requiere de un try catch si ocurre un error al intentar conectarse a la base de datos ej: url incorrecta, usuario o contraseña invalidos, base de datos apagada
-                Connection conexion = DriverManager.getConnection(url, usuario, password);
-                return conexion;
+                conexion = DriverManager.getConnection(url, usuario, password);
+               
 
             } catch (ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Error al cargar Driver " + ex.getMessage());

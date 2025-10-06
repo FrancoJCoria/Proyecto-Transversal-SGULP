@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Persistencia.alumnoData;
 import javax.swing.JInternalFrame;
 
 /**
@@ -14,11 +15,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipal.class.getName());
 
-    /**
-     * Creates new form MenuPrincipal
-     */
-    public MenuPrincipal() {
+    
+    private alumnoData alumnoData;
+    
+    public MenuPrincipal(alumnoData alumnoData) {
         initComponents();
+       this.alumnoData=alumnoData;
     }
     
     public void abrirInternal(JInternalFrame nuevo){
@@ -91,7 +93,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlumnosMouseClicked
-        VistaAlumno va = new VistaAlumno();
+        VistaAlumno va = new VistaAlumno(alumnoData);
         abrirInternal(va);
     }//GEN-LAST:event_AlumnosMouseClicked
 
@@ -100,44 +102,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         abrirInternal (vm);
     }//GEN-LAST:event_MateriasMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MenuPrincipal().setVisible(true));
-    }
+  
     
     
-    private void AlumnosActionPerformed(java.awt.event.ActionEvent evt){
-        VistaAlumno va = new VistaAlumno();
-        Escritorio.add(va);
-        va.setVisible(true);
-    }
     
-    private void MateriaActionPerformed(java.awt.event.ActionEvent evt){
-        VistaMateria vm=new VistaMateria();
-        Escritorio.add(vm);
-        vm.setVisible(true);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Alumnos;
     private javax.swing.JDesktopPane Escritorio;

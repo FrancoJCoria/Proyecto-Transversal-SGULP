@@ -21,8 +21,8 @@ public class alumnoData {
 
     private Connection con = null;
 
-    public alumnoData(Conexion conexion) {
-        this.con = conexion.buscarConexion();
+    public alumnoData() {
+        this.con = Conexion.buscarConexion();
     }
 
     public void guardarAlumno(Alumno a) {
@@ -40,24 +40,26 @@ public class alumnoData {
         }
     }
 
-    public void buscarAlumno(int id) {
+    public Alumno buscarAlumno(int id) {
         String sql = "SELECT * FROM alumno WHERE idAlumno = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
+            Alumno alumno = null;
             while (rs.next()) {
-                System.out.print(" ID " + rs.getInt("idAlumno"));
-                System.out.print(" Dni " + rs.getInt("dni"));
-                System.out.print(" Apellido " + rs.getString("Apellido"));
-                System.out.print(" Nombre " + rs.getString("Nombre"));
-                System.out.println(" Fecha Nac " + rs.getDate("fechaNacimiento"));
+                alumno.setIdAlumno(rs.getInt("idAlumno"));
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("Apellido"));
+                alumno.setNombre(rs.getString("Nombre"));
+                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
+                alumno.setEstado(rs.getBoolean("estado"));
+                return alumno;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
         }
-
+        return null;
     }
 
     public void actualizarAlumno(int id, String columna, Object dato) {

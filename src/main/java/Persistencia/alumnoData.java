@@ -35,9 +35,12 @@ public class alumnoData {
             ps.setDate(4, Date.valueOf(a.getFechaNacimiento()));
             ps.setBoolean(5, a.isEstado());
             ps.executeUpdate();
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
         }
+        JOptionPane.showMessageDialog(null, "Se agrego al alumno exitosamente!");
     }
 
     public Alumno buscarAlumno(int id) {

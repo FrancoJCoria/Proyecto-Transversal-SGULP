@@ -7,6 +7,7 @@ package Vista;
 import Modelo.Alumno;
 import Persistencia.alumnoData;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-    private alumnoData alumnoData;
+    private final alumnoData alumnoData;
     private Alumno alumno;
 
     public VistaAlumno(alumnoData alumnoData) {
@@ -53,8 +54,8 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         txtEstado = new javax.swing.JTextField();
         butBuscar = new javax.swing.JButton();
         butGuardar = new javax.swing.JButton();
-        dateNacimiento = new com.toedter.calendar.JDateChooser();
         butLimpiar = new javax.swing.JButton();
+        dateNacimiento = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
 
@@ -209,14 +210,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                                         .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dateNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(dateNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(butNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
-                        .addComponent(butBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
+                        .addComponent(butBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
                         .addComponent(butActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(butEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -248,7 +249,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(dateNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -274,41 +275,52 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void butNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butNuevoActionPerformed
 
-
-          String txtdni = txtDni.getText();
+        String txtdni = txtDni.getText();
         String txtapellido = txtApellido.getText();
-        String txtnombre = txtNombre.getText(); 
+        String txtnombre = txtNombre.getText();
         String txtestado = txtEstado.getText();
-        Date fechaNacimiento= dateNacimiento.getDate();
-        
-        if(txtdni.isEmpty()){
+        Date fechaNacimiento = dateNacimiento.getDate();
+
+        if (txtdni.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un DNI", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtapellido.isEmpty()){
+
+        if (txtapellido.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Apellido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtnombre.isEmpty()){
+
+        if (txtnombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Nombre", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtestado.isEmpty()){
+
+        if (txtestado.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Estado", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(fechaNacimiento==null){
+
+        if (fechaNacimiento == null) {
             JOptionPane.showMessageDialog(this, "Ingrese una Fecha de Nacimiento", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        int dni;
+        boolean estado;
+        try {
+            dni = Integer.parseInt(txtdni);
+            estado=Boolean.parseBoolean(txtestado);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Tipo de dato no valido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Conversion
+        LocalDate fechaNac = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+       alumno = new Alumno(-1,dni,txtapellido,txtnombre,fechaNac,estado);
+        butGuardar.setEnabled(true);
         
-        try{
-            int dni = Integer.parseInt(txtdni);
-        }catch(NumberFormatException e){}
 
     }//GEN-LAST:event_butNuevoActionPerformed
 
@@ -375,11 +387,12 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TablaAlumnosMouseClicked
 
     private void butGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butGuardarActionPerformed
-      
+        alumnoData.guardarAlumno(alumno);
+        
     }//GEN-LAST:event_butGuardarActionPerformed
 
     private void butLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butLimpiarActionPerformed
-        
+
         txtDni.setText("");
         txtApellido.setText("");
         txtNombre.setText("");

@@ -116,6 +116,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         butEliminar.setText("Eliminar");
 
         butBaja.setText("Dar de Baja");
+        butBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butBajaActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("DNI:");
 
@@ -310,7 +315,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         boolean estado;
         try {
             dni = Integer.parseInt(txtdni);
-            estado=Boolean.parseBoolean(txtestado);
+            estado = Boolean.parseBoolean(txtestado);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Tipo de dato no valido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -318,14 +323,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         //Conversion
         LocalDate fechaNac = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-       alumno = new Alumno(-1,dni,txtapellido,txtnombre,fechaNac,estado);
+        alumno = new Alumno(-1, dni, txtapellido, txtnombre, fechaNac, estado);
         butGuardar.setEnabled(true);
-        
+
 
     }//GEN-LAST:event_butNuevoActionPerformed
 
     private void butActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butActualizarActionPerformed
-       
+
     }//GEN-LAST:event_butActualizarActionPerformed
 
     private void txtDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDniActionPerformed
@@ -366,8 +371,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         Object[] fila = {alumno.getIdAlumno(), alumno.getDni(), alumno.getApellido(), alumno.getNombre(), alumno.getFechaNacimiento(), alumno.isEstado()};
         modelo.addRow(fila);
         TablaAlumnos.setModel(modelo);
-
-
+        
     }//GEN-LAST:event_butBuscarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -384,11 +388,16 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         txtNombre.setText(alumno.getNombre());
         dateNacimiento.setDate(java.sql.Date.valueOf(alumno.getFechaNacimiento()));
         txtEstado.setText(String.valueOf(alumno.isEstado()));
+
     }//GEN-LAST:event_TablaAlumnosMouseClicked
 
     private void butGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butGuardarActionPerformed
         alumnoData.guardarAlumno(alumno);
-        
+        txtDni.setText(String.valueOf(alumno.getDni()));
+        txtApellido.setText(alumno.getApellido());
+        txtNombre.setText(alumno.getNombre());
+        dateNacimiento.setDate(java.sql.Date.valueOf(alumno.getFechaNacimiento()));
+        txtEstado.setText(String.valueOf(alumno.isEstado()));
     }//GEN-LAST:event_butGuardarActionPerformed
 
     private void butLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butLimpiarActionPerformed
@@ -400,6 +409,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         dateNacimiento.setDate(date);
         txtEstado.setText("");
     }//GEN-LAST:event_butLimpiarActionPerformed
+
+    private void butBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butBajaActionPerformed
+        alumnoData.DarBajaAlumno(alumno.getIdAlumno());
+        
+    }//GEN-LAST:event_butBajaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

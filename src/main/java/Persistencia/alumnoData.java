@@ -40,7 +40,8 @@ public class alumnoData {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
         }
-        JOptionPane.showMessageDialog(null, "Se agrego al alumno exitosamente!");
+        JOptionPane.showMessageDialog(null, "Se agrego al alumno exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     public Alumno buscarAlumno(int id) {
@@ -80,14 +81,13 @@ public class alumnoData {
             } else if (dato instanceof Integer) {
                 ps.setInt(1, (int) dato);
 
-            } else if (dato instanceof LocalDate) {
-                ps.setDate(1, (Date) dato);
-
             } else if (dato instanceof Boolean) {
                 ps.setBoolean(1, (boolean) dato);
 
-            } else {
-                throw new IllegalArgumentException(" Tipo de dato no soportado");
+            } else if (dato instanceof java.sql.Date) {
+               ps.setDate(1, (java.sql.Date) dato);
+            }else{
+                 throw new IllegalArgumentException(" Tipo de dato no soportado");
             }
             ps.setInt(2, id);
             ps.executeUpdate();
@@ -107,7 +107,24 @@ public class alumnoData {
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
         }
+         JOptionPane.showMessageDialog(null, "El alumno se dio de baja exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    public void DarAltaAlumno(int id) {
+        String sql = "UPDATE alumno SET estado=? WHERE idAlumno=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1, true);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
+        }
+         JOptionPane.showMessageDialog(null, "El alumno se dio de alta exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarAlumno(int id) {
@@ -119,7 +136,8 @@ public class alumnoData {
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
         }
-
+         JOptionPane.showMessageDialog(null, "El alumno se elimino exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 }

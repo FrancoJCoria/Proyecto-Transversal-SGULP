@@ -7,6 +7,7 @@ package Vista;
 import Modelo.Alumno;
 import Persistencia.alumnoData;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-    private alumnoData alumnoData;
+    private final alumnoData alumnoData;
     private Alumno alumno;
 
     public VistaAlumno(alumnoData alumnoData) {
@@ -113,8 +114,23 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         });
 
         butEliminar.setText("Eliminar");
+        butEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butEliminarActionPerformed(evt);
+            }
+        });
 
-        butBaja.setText("Dar de Baja");
+        butBaja.setText("Dar de Alta/Baja");
+        butBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butBajaActionPerformed(evt);
+            }
+        });
+        butBaja.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                butBajaKeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("DNI:");
 
@@ -209,14 +225,16 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                                         .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dateNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+
+                                        .addComponent(dateNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
+                        .addGap(35, 35, 35)
                         .addComponent(butNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(butBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
+                        .addGap(44, 44, 44)
+                        .addComponent(butBaja)
+                        .addGap(52, 52, 52)
                         .addComponent(butActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(butEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -274,46 +292,70 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void butNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butNuevoActionPerformed
 
-
-          String txtdni = txtDni.getText();
+        String txtdni = txtDni.getText();
         String txtapellido = txtApellido.getText();
-        String txtnombre = txtNombre.getText(); 
+        String txtnombre = txtNombre.getText();
         String txtestado = txtEstado.getText();
-        Date fechaNacimiento= dateNacimiento.getDate();
-        
-        if(txtdni.isEmpty()){
+        Date fechaNacimiento = dateNacimiento.getDate();
+
+        if (txtdni.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un DNI", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtapellido.isEmpty()){
+
+        if (txtapellido.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Apellido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtnombre.isEmpty()){
+
+        if (txtnombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Nombre", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(txtestado.isEmpty()){
+
+        if (txtestado.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un Estado", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(fechaNacimiento==null){
+
+        if (fechaNacimiento == null) {
             JOptionPane.showMessageDialog(this, "Ingrese una Fecha de Nacimiento", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        try{
-            int dni = Integer.parseInt(txtdni);
-        }catch(NumberFormatException e){}
+
+        int dni;
+        boolean estado;
+        try {
+            dni = Integer.parseInt(txtdni);
+            estado = Boolean.parseBoolean(txtestado);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Tipo de dato no valido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Conversion
+        LocalDate fechaNac = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        alumno = new Alumno(-1, dni, txtapellido, txtnombre, fechaNac, estado);
+        alumnoData.guardarAlumno(alumno);
+        butGuardar.setEnabled(true);
+
 
     }//GEN-LAST:event_butNuevoActionPerformed
 
     private void butActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butActualizarActionPerformed
-        // TODO add your handling code here:
+        String txtdni = txtDni.getText();
+        int dni = Integer.parseInt(txtdni);
+        String txtapellido = txtApellido.getText();
+        String txtnombre = txtNombre.getText();
+        String txtestado = txtEstado.getText();
+        java.sql.Date fechaSQL = new java.sql.Date(dateNacimiento.getDate().getTime());
+        boolean estado = Boolean.parseBoolean(txtestado);
+        alumnoData.actualizarAlumno(alumno.getIdAlumno(), "dni", dni);
+        alumnoData.actualizarAlumno(alumno.getIdAlumno(), "apellido", txtapellido);
+        alumnoData.actualizarAlumno(alumno.getIdAlumno(), "nombre", txtnombre);
+        alumnoData.actualizarAlumno(alumno.getIdAlumno(), "fechaNacimiento", fechaSQL);
+        alumnoData.actualizarAlumno(alumno.getIdAlumno(), "estado", estado);
+        butGuardar.setEnabled(true);
     }//GEN-LAST:event_butActualizarActionPerformed
 
     private void txtDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDniActionPerformed
@@ -353,9 +395,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         modelo.setRowCount(0);
         Object[] fila = {alumno.getIdAlumno(), alumno.getDni(), alumno.getApellido(), alumno.getNombre(), alumno.getFechaNacimiento(), alumno.isEstado()};
         modelo.addRow(fila);
-        TablaAlumnos.setModel(modelo);
-
-
     }//GEN-LAST:event_butBuscarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -372,10 +411,21 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         txtNombre.setText(alumno.getNombre());
         dateNacimiento.setDate(java.sql.Date.valueOf(alumno.getFechaNacimiento()));
         txtEstado.setText(String.valueOf(alumno.isEstado()));
+        txtEstado.setEditable(false);
     }//GEN-LAST:event_TablaAlumnosMouseClicked
 
     private void butGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butGuardarActionPerformed
-      
+        JOptionPane.showMessageDialog(null, "SE GUARDO EXITOSAMENTE!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        DefaultTableModel modelo = (DefaultTableModel) TablaAlumnos.getModel();
+        modelo.setRowCount(0);
+        txtBuscar.setText("");
+        txtDni.setText("");
+        txtApellido.setText("");
+        txtNombre.setText("");
+        dateNacimiento.setDate(null);
+        txtEstado.setText("");
+        butGuardar.setEnabled(false);
+        txtEstado.setEditable(true);
     }//GEN-LAST:event_butGuardarActionPerformed
 
     private void butLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butLimpiarActionPerformed
@@ -386,7 +436,30 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         Date date = null;
         dateNacimiento.setDate(date);
         txtEstado.setText("");
+        txtEstado.setEditable(true);
     }//GEN-LAST:event_butLimpiarActionPerformed
+
+    private void butBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butBajaActionPerformed
+
+        if (alumno.isEstado() == false) {
+            alumnoData.DarAltaAlumno(alumno.getIdAlumno());
+            butGuardar.setEnabled(true);
+
+        } else {
+            alumnoData.DarBajaAlumno(alumno.getIdAlumno());
+            butGuardar.setEnabled(true);
+        }
+
+    }//GEN-LAST:event_butBajaActionPerformed
+
+    private void butBajaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_butBajaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_butBajaKeyReleased
+
+    private void butEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butEliminarActionPerformed
+        alumnoData.eliminarAlumno(alumno.getIdAlumno());
+        butGuardar.setEnabled(true);
+    }//GEN-LAST:event_butEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

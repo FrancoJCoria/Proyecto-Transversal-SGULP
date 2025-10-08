@@ -38,24 +38,25 @@ public class materiaData {
         }
     }
 
-    public void buscarMateria(int id) {
+    public Materia buscarMateria(int id) {
         String sql = "SELECT * FROM materia WHERE idMateria = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                System.out.print(" ID " + rs.getInt("idMateria"));
-                System.out.print(" Nombre " + rs.getString("nombre"));
-                System.out.print(" Año " + rs.getInt("año"));
-                System.out.print(" Estado " + rs.getBoolean("estado"));
-               
+            Materia materia = null;
+            if (rs.next()) {
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setAño(rs.getInt("año"));
+                materia.setEstado(rs.getBoolean("estado"));
+               return materia;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+          
         }
-
+        return null;
     }
 
     public void actualizarMateria(int id, String columna, Object dato) {

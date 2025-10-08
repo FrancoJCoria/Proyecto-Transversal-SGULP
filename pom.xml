@@ -12,12 +12,17 @@
         <exec.mainClass>Vista.ProyectoTransversalSG</exec.mainClass>
     </properties>
     
-    <dependencies>
+   <dependencies>
     <dependency>
         <groupId>org.mariadb.jdbc</groupId>
         <artifactId>mariadb-java-client</artifactId>
         <version>3.1.4</version>
     </dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
 
 </project>

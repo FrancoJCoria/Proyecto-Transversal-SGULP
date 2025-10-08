@@ -19,8 +19,9 @@ public class ProyectoTransversalSG {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                materiaData materiaData = new materiaData();
                 alumnoData alumnoData = new alumnoData();
-                new MenuPrincipal(alumnoData).setVisible(true);
+                new MenuPrincipal(alumnoData,materiaData).setVisible(true);
             }
         });
 

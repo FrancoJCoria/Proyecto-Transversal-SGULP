@@ -58,13 +58,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         dateNacimiento = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         TablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
             },
             new String [] {
@@ -79,6 +77,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        TablaAlumnos.setEnabled(false);
         TablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TablaAlumnosMouseClicked(evt);

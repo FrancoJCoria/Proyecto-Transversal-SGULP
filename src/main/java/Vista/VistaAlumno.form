@@ -58,7 +58,9 @@
                                       <Component id="txtApellido" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtNombre" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtEstado" min="-2" pref="276" max="-2" attributes="0"/>
+
                                       <Component id="dateNacimiento" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+
                                   </Group>
                               </Group>
                           </Group>

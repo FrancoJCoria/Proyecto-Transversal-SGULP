@@ -3,6 +3,8 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
+    <Property name="maximizable" type="boolean" value="true"/>
+    <Property name="resizable" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -58,7 +60,11 @@
                                       <Component id="txtApellido" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtNombre" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtEstado" min="-2" pref="276" max="-2" attributes="0"/>
-                                      <Component id="dateNacimiento" min="-2" max="-2" attributes="0"/>
+
+
+                                      <Component id="dateNacimiento" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+
+
                                   </Group>
                               </Group>
                           </Group>
@@ -66,11 +72,11 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="butNuevo" min="-2" pref="97" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                      <Component id="butBaja" min="-2" pref="93" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                      <Component id="butBaja" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       <Component id="butActualizar" min="-2" pref="110" max="-2" attributes="0"/>
                       <EmptySpace pref="34" max="32767" attributes="0"/>
                       <Component id="butEliminar" min="-2" pref="116" max="-2" attributes="0"/>
@@ -111,7 +117,9 @@
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <Component id="dateNacimiento" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEstado" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -144,7 +152,7 @@
         <Component class="javax.swing.JTable" name="TablaAlumnos">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="5">
+              <Table columnCount="6" rowCount="1">
                 <Column editable="false" title="ID" type="java.lang.Object"/>
                 <Column editable="false" title="DNI" type="java.lang.Object"/>
                 <Column editable="false" title="Apellido" type="java.lang.Object"/>
@@ -187,6 +195,7 @@
                 </Column>
               </TableColumnModel>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
@@ -228,11 +237,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butEliminarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="butBaja">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Dar de Baja"/>
+        <Property name="text" type="java.lang.String" value="Dar de Alta/Baja"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butBajaActionPerformed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="butBajaKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

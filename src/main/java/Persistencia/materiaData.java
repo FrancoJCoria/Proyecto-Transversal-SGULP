@@ -20,8 +20,8 @@ public class materiaData {
     
     private Connection con = null;
 
-    public materiaData(Conexion conexion) {
-        this.con=conexion.buscarConexion();
+    public materiaData() {
+        this.con=Conexion.buscarConexion();
     }
     
      public void guardarMateria(Materia m) {
@@ -35,27 +35,31 @@ public class materiaData {
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
         }
+        JOptionPane.showMessageDialog(null, "La materia se agrego exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void buscarMateria(int id) {
+    public Materia buscarMateria(int id) {
         String sql = "SELECT * FROM materia WHERE idMateria = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                System.out.print(" ID " + rs.getInt("idMateria"));
-                System.out.print(" Nombre " + rs.getString("nombre"));
-                System.out.print(" Año " + rs.getInt("año"));
-                System.out.print(" Estado " + rs.getBoolean("estado"));
-               
+            Materia materia;
+            if (rs.next()) {
+                materia=new Materia();
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setAño(rs.getInt("año"));
+                materia.setEstado(rs.getBoolean("estado"));
+               return materia;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+          
         }
-
+        return null;
     }
 
     public void actualizarMateria(int id, String columna, Object dato) {
@@ -97,7 +101,24 @@ public class materiaData {
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
         }
+        JOptionPane.showMessageDialog(null, "La materia se dio de baja exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    public void DarAltaMateria(int id){
+     String sql = "UPDATE materia SET estado=? WHERE idMateria=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setBoolean(1, true);
+            ps.setInt(2,id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "El alumno se dio de alta exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarMateria(int id) {

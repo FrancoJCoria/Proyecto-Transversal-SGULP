@@ -30,7 +30,7 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
         jLab2BscrAlmns = new javax.swing.JLabel();
         jTextF1Dni = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTab1Alumnos = new javax.swing.JTable();
         jButt1Buscar = new javax.swing.JButton();
         jButt2GrdarCmbios = new javax.swing.JButton();
         jButtCnlar = new javax.swing.JButton();
@@ -40,7 +40,7 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
         jLab2BscrAlmns.setText("Buscar  Alumno:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTab1Alumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -51,14 +51,14 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
                 "Id Alumno", "dni", "Apellido", "nombre", "fechaNacimiento", "estado"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
+        jScrollPane1.setViewportView(jTab1Alumnos);
+        if (jTab1Alumnos.getColumnModel().getColumnCount() > 0) {
+            jTab1Alumnos.getColumnModel().getColumn(0).setResizable(false);
+            jTab1Alumnos.getColumnModel().getColumn(1).setResizable(false);
+            jTab1Alumnos.getColumnModel().getColumn(2).setResizable(false);
+            jTab1Alumnos.getColumnModel().getColumn(3).setResizable(false);
+            jTab1Alumnos.getColumnModel().getColumn(4).setResizable(false);
+            jTab1Alumnos.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jButt1Buscar.setText("Buscar");
@@ -123,7 +123,7 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLab1Titlo;
     private javax.swing.JLabel jLab2BscrAlmns;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTab1Alumnos;
     private javax.swing.JTextField jTextF1Dni;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,7 @@
 package Vista;
 
 import Persistencia.alumnoData;
+import Persistencia.materiaData;
 import javax.swing.JInternalFrame;
 
 /**
@@ -17,10 +18,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     
     private alumnoData alumnoData;
+    private materiaData materiaData;
     
-    public MenuPrincipal(alumnoData alumnoData) {
+    public MenuPrincipal(alumnoData alumnoData,materiaData materiaData) {
         initComponents();
        this.alumnoData=alumnoData;
+       this.materiaData=materiaData;
     }
     
     public void abrirInternal(JInternalFrame nuevo){
@@ -98,7 +101,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_AlumnosMouseClicked
 
     private void MateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MateriasMouseClicked
-        VistaMateria vm = new VistaMateria();
+        VistaMateria vm = new VistaMateria(materiaData);
         abrirInternal (vm);
     }//GEN-LAST:event_MateriasMouseClicked
 

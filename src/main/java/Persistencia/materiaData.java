@@ -20,8 +20,8 @@ public class materiaData {
     
     private Connection con = null;
 
-    public materiaData(Conexion conexion) {
-        this.con=conexion.buscarConexion();
+    public materiaData() {
+        this.con=Conexion.buscarConexion();
     }
     
      public void guardarMateria(Materia m) {
@@ -46,8 +46,9 @@ public class materiaData {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            Materia materia = null;
+            Materia materia;
             if (rs.next()) {
+                materia=new Materia();
                 materia.setIdMateria(rs.getInt("idMateria"));
                 materia.setNombre(rs.getString("nombre"));
                 materia.setAño(rs.getInt("año"));

@@ -4,7 +4,6 @@
  */
 package Persistencia;
 
-
 import Modelo.Inscripcion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,4 +64,5 @@ public class inscripcionData {
     }
     
     
+
 }

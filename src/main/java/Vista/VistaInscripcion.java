@@ -4,14 +4,45 @@
  */
 package Vista;
 
+import Modelo.Alumno;
+import Modelo.Materia;
+import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
+import Persistencia.materiaData;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 public class VistaInscripcion extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form VistaInscripcion
      */
-    public VistaInscripcion() {
+    private alumnoData alumnoData;
+    private final inscripcionData inscripcionData;
+    private final ArrayList<Materia> materias;
+
+    public VistaInscripcion(alumnoData alumnoData, materiaData materiaData, inscripcionData inscripcionData) {
         initComponents();
+        this.alumnoData = alumnoData;
+        this.inscripcionData = inscripcionData;
+        this.materias = materiaData.listarMaterias();
+
+        cargarAlumnos();
+    }
+
+    private void cargarAlumnos() {
+        alumnoComboBox.removeAllItems();
+
+        ArrayList<String> apellidoAlumnos = new ArrayList<>();
+        ArrayList<Alumno> alumnos = alumnoData.listarAlumnos();
+
+        for (Alumno a : alumnos) {
+            apellidoAlumnos.add(a.getApellido() + " - " + a.getIdAlumno());
+        }
+
+        for (String rubro : apellidoAlumnos) {
+            alumnoComboBox.addItem(rubro);
+        }
     }
 
     /**
@@ -34,9 +65,9 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         buttNOInscripta = new javax.swing.JRadioButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         inscripcionTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        butInscribir = new javax.swing.JButton();
+        butAnularInscripcion = new javax.swing.JButton();
+        butSalir = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,6 +97,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("LISTADO DE MATERIAS");
 
+        buttonGroup1.add(buttInscripta);
         buttInscripta.setText("Inscriptas");
         buttInscripta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,6 +105,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             }
         });
 
+        buttonGroup1.add(buttNOInscripta);
         buttNOInscripta.setText("No Inscriptas");
         buttNOInscripta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,16 +121,9 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                 "ID", "Nombre"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Double.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -105,11 +131,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(inscripcionTable);
 
-        jButton1.setText("Inscribir");
+        butInscribir.setText("Inscribir");
 
-        jButton2.setText("Anular Inscripcion");
+        butAnularInscripcion.setText("Anular Inscripcion");
 
-        jButton3.setText("Salir");
+        butSalir.setText("Salir");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,11 +161,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(butInscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
-                                .addComponent(jButton2)
+                                .addComponent(butAnularInscripcion)
                                 .addGap(34, 34, 34)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(butSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(50, 50, 50))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -165,9 +191,9 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(butInscribir)
+                    .addComponent(butAnularInscripcion)
+                    .addComponent(butSalir))
                 .addGap(36, 36, 36))
         );
 
@@ -175,27 +201,52 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttNOInscriptaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttNOInscriptaActionPerformed
-        // TODO add your handling code here:
+        String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        ArrayList<Materia> materiasNoInscriptas = inscripcionData.listarMateriasNoCursadas(idAlumno);
+
+        DefaultTableModel modelo = (DefaultTableModel) inscripcionTable.getModel();
+        modelo.setRowCount(0);
+
+        for (Materia materia : materiasNoInscriptas) {
+            Object[] fila = {materia.getIdMateria(), materia.getNombre()};
+            modelo.addRow(fila);
+
+        }
     }//GEN-LAST:event_buttNOInscriptaActionPerformed
 
     private void buttInscriptaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttInscriptaActionPerformed
-        // TODO add your handling code here:
+        String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        ArrayList<Materia> materiasInscriptas = inscripcionData.listarMateriasCursadas(idAlumno);
+
+        DefaultTableModel modelo = (DefaultTableModel) inscripcionTable.getModel();
+        modelo.setRowCount(0);
+
+        for (Materia materia : materiasInscriptas) {
+            Object[] fila = {materia.getIdMateria(), materia.getNombre()};
+            modelo.addRow(fila);
+        }
     }//GEN-LAST:event_buttInscriptaActionPerformed
 
     private void alumnoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alumnoComboBoxActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_alumnoComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> alumnoComboBox;
+    private javax.swing.JButton butAnularInscripcion;
+    private javax.swing.JButton butInscribir;
+    private javax.swing.JButton butSalir;
     private javax.swing.JRadioButton buttInscripta;
     private javax.swing.JRadioButton buttNOInscripta;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTable inscripcionTable;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

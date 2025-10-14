@@ -5,6 +5,7 @@
 package Vista;
 
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
 import Persistencia.materiaData;
 import javax.swing.JInternalFrame;
 
@@ -17,13 +18,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipal.class.getName());
 
     
-    private alumnoData alumnoData;
-    private materiaData materiaData;
-    
-    public MenuPrincipal(alumnoData alumnoData,materiaData materiaData) {
+    private final alumnoData alumnoData;
+    private final materiaData materiaData;
+    private final inscripcionData inscripcionData;
+    public MenuPrincipal(alumnoData alumnoData,materiaData materiaData, inscripcionData inscripcionData) {
         initComponents();
        this.alumnoData=alumnoData;
        this.materiaData=materiaData;
+       this.inscripcionData=inscripcionData;
     }
     
     public void abrirInternal(JInternalFrame nuevo){
@@ -115,7 +117,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_MateriasMouseClicked
 
     private void InscripcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InscripcionesMouseClicked
-        VistaInscripcion vi = new VistaInscripcion();
+        VistaInscripcion vi = new VistaInscripcion(alumnoData,materiaData,inscripcionData);
         abrirInternal (vi);
     }//GEN-LAST:event_InscripcionesMouseClicked
 

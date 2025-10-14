@@ -5,12 +5,15 @@
 package Persistencia;
 
 import Modelo.Alumno;
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -139,5 +142,29 @@ public class alumnoData {
             return;
         }
          JOptionPane.showMessageDialog(null, "El alumno se elimino exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public ArrayList<Alumno> listarAlumnos(){
+          ArrayList<Alumno> alumnos = new ArrayList<>();
+          String sql = "SELECT * FROM alumno";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+             Alumno alumno = new Alumno();
+             alumno.setIdAlumno(rs.getInt("IdAlumno"));
+             alumno.setDni(rs.getInt("dni"));
+             alumno.setApellido(rs.getString("apellido"));
+             alumno.setNombre(rs.getString("nombre"));
+             alumno.setFechaNacimiento( rs.getDate("fechaNacimiento").toLocalDate());
+             alumno.setEstado(rs.getBoolean("estado"));
+             alumnos.add(alumno);
+            }
+            return alumnos;
+        } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return null;
+        }
+          
     }
 }

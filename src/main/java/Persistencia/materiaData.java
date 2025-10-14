@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -133,6 +134,31 @@ public class materiaData {
         }
 
     }
+    
+        
+    public ArrayList<Materia> listarMaterias(){
+          ArrayList<Materia> materias = new ArrayList<>();
+          String sql = "SELECT * FROM materia";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+             Materia materia = new Materia();
+             materia.setIdMateria(rs.getInt("IdMateria"));
+             materia.setNombre(rs.getString("nombre"));
+            
+            }
+            return materias;
+        } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return null;
+        }
+          
+    }
+    
+
+    
+    
 }
 
     

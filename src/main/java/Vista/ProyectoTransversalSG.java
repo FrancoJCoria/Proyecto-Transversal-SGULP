@@ -5,6 +5,7 @@ package Vista;
 
 import Modelo.Alumno;
 import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
 import Persistencia.materiaData;
 import java.time.LocalDate;
 
@@ -21,7 +22,8 @@ public class ProyectoTransversalSG {
             public void run() {
                 materiaData materiaData = new materiaData();
                 alumnoData alumnoData = new alumnoData();
-                new MenuPrincipal(alumnoData,materiaData).setVisible(true);
+                inscripcionData inscripcionData = new inscripcionData(materiaData);
+                new MenuPrincipal(alumnoData,materiaData,inscripcionData).setVisible(true);
             }
         });
 

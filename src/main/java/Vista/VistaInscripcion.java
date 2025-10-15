@@ -45,6 +45,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jButton17.setText("Anular Inscripcion");
 
+        Grupo_Botones.add(jrbNoinscriptas);
         jrbNoinscriptas.setText("No inscriptas");
         jrbNoinscriptas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,6 +57,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jCbxAlumnos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        Grupo_Botones.add(jrbinscriptas);
         jrbinscriptas.setText("Materias Inscriptas");
 
         jTableMateria.setModel(new javax.swing.table.DefaultTableModel(

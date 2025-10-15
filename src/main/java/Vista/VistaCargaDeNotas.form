@@ -150,8 +150,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButt2GrdarCmbios">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Guardar Cambiios"/>
+        <Property name="text" type="java.lang.String" value="Guardar Cambios"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButt2GrdarCmbiosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtCnlar">
       <Properties>

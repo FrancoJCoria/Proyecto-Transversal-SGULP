@@ -63,7 +63,12 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
         jButt1Buscar.setText("Buscar");
 
-        jButt2GrdarCmbios.setText("Guardar Cambiios");
+        jButt2GrdarCmbios.setText("Guardar Cambios");
+        jButt2GrdarCmbios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButt2GrdarCmbiosActionPerformed(evt);
+            }
+        });
 
         jButtCnlar.setText("Cancelar");
 
@@ -114,6 +119,10 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButt2GrdarCmbiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButt2GrdarCmbiosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButt2GrdarCmbiosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

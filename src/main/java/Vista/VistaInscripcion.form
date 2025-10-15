@@ -141,6 +141,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="alumnoComboBoxMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="alumnoComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
@@ -210,6 +211,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inscripcionTableMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -217,11 +221,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Inscribir"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butInscribirActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="butAnularInscripcion">
       <Properties>
         <Property name="text" type="java.lang.String" value="Anular Inscripcion"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butAnularInscripcionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="butSalir">
       <Properties>

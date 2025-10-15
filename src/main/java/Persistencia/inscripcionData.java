@@ -20,11 +20,9 @@ import javax.swing.JOptionPane;
 public class inscripcionData {
 
     private Connection con = null;
-    private final materiaData materiaData;
 
     public inscripcionData(materiaData materiaData) {
         this.con = Conexion.buscarConexion();
-        this.materiaData = materiaData;
     }
 
     public void guardarInscripcion(Inscripcion i) {
@@ -35,6 +33,7 @@ public class inscripcionData {
             ps.setInt(2, i.getIdAlumno());
             ps.setInt(3, i.getIdMateria());
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
@@ -59,6 +58,8 @@ public class inscripcionData {
                 ps.executeQuery();
                 return inscripcion;
             }
+            ps.close();
+            rs.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
@@ -84,6 +85,7 @@ public class inscripcionData {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al eliminar inscripción: " + ex.getMessage());
         }
+
     }
 
     public ArrayList<Materia> listarMateriasCursadas(int idAlumno) {
@@ -102,6 +104,8 @@ public class inscripcionData {
                 materia.setNombre(rs.getString("nombre"));
                 materias.add(materia);
             }
+            ps.close();
+            rs.close();
             return materias;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
@@ -111,8 +115,27 @@ public class inscripcionData {
     }
 
     public ArrayList<Materia> listarMateriasNoCursadas(int idAlumno) {
+        ArrayList<Materia> materias = new ArrayList<>();
 
-       return null;
+        String sql = "SELECT * FROM materia WHERE idMateria NOT IN "
+                + "(SELECT idMateria FROM inscripcion WHERE idAlumno=?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Materia materia = new Materia();
+                materia.setIdMateria(rs.getInt("IdMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materias.add(materia);
+            }
+            ps.close();
+            rs.close();
+            return materias;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return null;
+        }
     }
 
 }

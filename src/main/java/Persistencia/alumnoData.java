@@ -5,15 +5,12 @@
 package Persistencia;
 
 import Modelo.Alumno;
-import java.awt.List;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +35,8 @@ public class alumnoData {
             ps.setDate(4, Date.valueOf(a.getFechaNacimiento()));
             ps.setBoolean(5, a.isEstado());
             ps.executeUpdate();
-            
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
@@ -55,13 +53,15 @@ public class alumnoData {
             ResultSet rs = ps.executeQuery();
             Alumno alumno = null;
             if (rs.next()) {
-                alumno=new Alumno();
+                alumno = new Alumno();
                 alumno.setIdAlumno(rs.getInt("idAlumno"));
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("Apellido"));
                 alumno.setNombre(rs.getString("Nombre"));
                 alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setEstado(rs.getBoolean("estado"));
+                ps.close();
+                rs.close();
                 return alumno;
             }
         } catch (SQLException ex) {
@@ -88,12 +88,13 @@ public class alumnoData {
                 ps.setBoolean(1, (boolean) dato);
 
             } else if (dato instanceof java.sql.Date) {
-               ps.setDate(1, (java.sql.Date) dato);
-            }else{
-                 throw new IllegalArgumentException(" Tipo de dato no soportado");
+                ps.setDate(1, (java.sql.Date) dato);
+            } else {
+                throw new IllegalArgumentException(" Tipo de dato no soportado");
             }
             ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
@@ -106,28 +107,31 @@ public class alumnoData {
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, false);
-            ps.setInt(2,id);
+            ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
         }
-         JOptionPane.showMessageDialog(null, "El alumno se dio de baja exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El alumno se dio de baja exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    
+
     public void DarAltaAlumno(int id) {
         String sql = "UPDATE alumno SET estado=? WHERE idAlumno=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, true);
-            ps.setInt(2,id);
+            ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
         }
-         JOptionPane.showMessageDialog(null, "El alumno se dio de alta exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El alumno se dio de alta exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void eliminarAlumno(int id) {
@@ -137,34 +141,38 @@ public class alumnoData {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
         }
-         JOptionPane.showMessageDialog(null, "El alumno se elimino exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El alumno se elimino exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    public ArrayList<Alumno> listarAlumnos(){
-          ArrayList<Alumno> alumnos = new ArrayList<>();
-          String sql = "SELECT * FROM alumno";
+
+    public ArrayList<Alumno> listarAlumnos() {
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+        String sql = "SELECT * FROM alumno";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-             Alumno alumno = new Alumno();
-             alumno.setIdAlumno(rs.getInt("IdAlumno"));
-             alumno.setDni(rs.getInt("dni"));
-             alumno.setApellido(rs.getString("apellido"));
-             alumno.setNombre(rs.getString("nombre"));
-             alumno.setFechaNacimiento( rs.getDate("fechaNacimiento").toLocalDate());
-             alumno.setEstado(rs.getBoolean("estado"));
-             alumnos.add(alumno);
+            while (rs.next()) {
+                Alumno alumno = new Alumno();
+                alumno.setIdAlumno(rs.getInt("IdAlumno"));
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
+                alumno.setEstado(rs.getBoolean("estado"));
+                alumnos.add(alumno);
             }
+            ps.close();
+            rs.close();
             return alumnos;
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return null;
         }
-          
+
     }
 }

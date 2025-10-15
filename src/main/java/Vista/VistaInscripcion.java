@@ -5,6 +5,7 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Inscripcion;
 import Modelo.Materia;
 import Persistencia.alumnoData;
 import Persistencia.inscripcionData;
@@ -20,26 +21,26 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private alumnoData alumnoData;
     private final inscripcionData inscripcionData;
     private final ArrayList<Materia> materias;
-
+    
     public VistaInscripcion(alumnoData alumnoData, materiaData materiaData, inscripcionData inscripcionData) {
         initComponents();
         this.alumnoData = alumnoData;
         this.inscripcionData = inscripcionData;
         this.materias = materiaData.listarMaterias();
-
+        
         cargarAlumnos();
     }
-
+    
     private void cargarAlumnos() {
         alumnoComboBox.removeAllItems();
-
+        
         ArrayList<String> apellidoAlumnos = new ArrayList<>();
         ArrayList<Alumno> alumnos = alumnoData.listarAlumnos();
-
+        
         for (Alumno a : alumnos) {
             apellidoAlumnos.add(a.getApellido() + " - " + a.getIdAlumno());
         }
-
+        
         for (String rubro : apellidoAlumnos) {
             alumnoComboBox.addItem(rubro);
         }
@@ -88,6 +89,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Alumno");
 
+        alumnoComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                alumnoComboBoxMouseClicked(evt);
+            }
+        });
         alumnoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 alumnoComboBoxActionPerformed(evt);
@@ -129,11 +135,26 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        inscripcionTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inscripcionTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(inscripcionTable);
 
         butInscribir.setText("Inscribir");
+        butInscribir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butInscribirActionPerformed(evt);
+            }
+        });
 
         butAnularInscripcion.setText("Anular Inscripcion");
+        butAnularInscripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butAnularInscripcionActionPerformed(evt);
+            }
+        });
 
         butSalir.setText("Salir");
 
@@ -201,32 +222,34 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttNOInscriptaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttNOInscriptaActionPerformed
+        
         String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
         String[] partes = alumnoSeleccionado.split(" - ");
         String txtIdAlumno = partes[1];
         int idAlumno = Integer.parseInt(txtIdAlumno);
         ArrayList<Materia> materiasNoInscriptas = inscripcionData.listarMateriasNoCursadas(idAlumno);
-
+        
         DefaultTableModel modelo = (DefaultTableModel) inscripcionTable.getModel();
         modelo.setRowCount(0);
-
+        
         for (Materia materia : materiasNoInscriptas) {
             Object[] fila = {materia.getIdMateria(), materia.getNombre()};
             modelo.addRow(fila);
-
+            
         }
     }//GEN-LAST:event_buttNOInscriptaActionPerformed
 
     private void buttInscriptaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttInscriptaActionPerformed
+        
         String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
         String[] partes = alumnoSeleccionado.split(" - ");
         String txtIdAlumno = partes[1];
         int idAlumno = Integer.parseInt(txtIdAlumno);
         ArrayList<Materia> materiasInscriptas = inscripcionData.listarMateriasCursadas(idAlumno);
-
+        
         DefaultTableModel modelo = (DefaultTableModel) inscripcionTable.getModel();
         modelo.setRowCount(0);
-
+        
         for (Materia materia : materiasInscriptas) {
             Object[] fila = {materia.getIdMateria(), materia.getNombre()};
             modelo.addRow(fila);
@@ -236,6 +259,48 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private void alumnoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alumnoComboBoxActionPerformed
 
     }//GEN-LAST:event_alumnoComboBoxActionPerformed
+
+    private void inscripcionTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inscripcionTableMouseClicked
+    }//GEN-LAST:event_inscripcionTableMouseClicked
+
+    private void alumnoComboBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_alumnoComboBoxMouseClicked
+        buttonGroup1.clearSelection();
+        DefaultTableModel modelo = (DefaultTableModel) inscripcionTable.getModel();
+        modelo.setRowCount(0);
+    }//GEN-LAST:event_alumnoComboBoxMouseClicked
+
+    private void butInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butInscribirActionPerformed
+        int filaSeleccionada = inscripcionTable.getSelectedRow();
+        int idMateria = (Integer) inscripcionTable.getValueAt(filaSeleccionada, 0);
+        String nombreMateria = (String) inscripcionTable.getValueAt(filaSeleccionada, 1);
+        
+        String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        
+        Inscripcion ins = new Inscripcion();
+        
+        ins.setIdAlumno(idAlumno);
+        ins.setIdMateria(idMateria);
+        ins.setIdInscripto(-1);
+        
+        inscripcionData.guardarInscripcion(ins);
+        
+    }//GEN-LAST:event_butInscribirActionPerformed
+
+    private void butAnularInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAnularInscripcionActionPerformed
+        int filaSeleccionada = inscripcionTable.getSelectedRow();
+        int idMateria = (Integer) inscripcionTable.getValueAt(filaSeleccionada, 0);
+        String nombreMateria = (String) inscripcionTable.getValueAt(filaSeleccionada, 1);
+        
+        String alumnoSeleccionado = alumnoComboBox.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        
+        inscripcionData.borrarInscripcion(idAlumno, idMateria);
+    }//GEN-LAST:event_butAnularInscripcionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

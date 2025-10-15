@@ -4,7 +4,6 @@
  */
 package Persistencia;
 
-
 import Modelo.Materia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,22 +17,24 @@ import javax.swing.JOptionPane;
  * @author FRANCO
  */
 public class materiaData {
-    
+
     private Connection con = null;
 
     public materiaData() {
-        this.con=Conexion.buscarConexion();
+        this.con = Conexion.buscarConexion();
     }
-    
-     public void guardarMateria(Materia m) {
+
+    public void guardarMateria(Materia m) {
         String sql = "INSERT INTO materia(nombre,año,estado) VALUES(?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            
+
             ps.setString(1, m.getNombre());
-            ps.setInt(2,m.getAño());
+            ps.setInt(2, m.getAño());
             ps.setBoolean(3, m.isEstado());
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
@@ -49,16 +50,18 @@ public class materiaData {
             ResultSet rs = ps.executeQuery();
             Materia materia;
             if (rs.next()) {
-                materia=new Materia();
+                materia = new Materia();
                 materia.setIdMateria(rs.getInt("idMateria"));
                 materia.setNombre(rs.getString("nombre"));
                 materia.setAño(rs.getInt("año"));
                 materia.setEstado(rs.getBoolean("estado"));
-               return materia;
+                ps.close();
+                rs.close();
+                return materia;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
-          
+
         }
         return null;
     }
@@ -77,7 +80,6 @@ public class materiaData {
             } else if (dato instanceof Integer) {
                 ps.setInt(1, (int) dato);
 
-            
             } else if (dato instanceof Boolean) {
                 ps.setBoolean(1, (boolean) dato);
 
@@ -86,6 +88,7 @@ public class materiaData {
             }
             ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
@@ -98,23 +101,26 @@ public class materiaData {
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, false);
-            ps.setInt(2,id);
+            ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
         }
         JOptionPane.showMessageDialog(null, "La materia se dio de baja exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
-    
-    
-    public void DarAltaMateria(int id){
-     String sql = "UPDATE materia SET estado=? WHERE idMateria=?";
+
+    public void DarAltaMateria(int id) {
+        String sql = "UPDATE materia SET estado=? WHERE idMateria=?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1, true);
-            ps.setInt(2,id);
+            ps.setInt(2, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return;
@@ -129,39 +135,34 @@ public class materiaData {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
         }
 
     }
-    
-        
-    public ArrayList<Materia> listarMaterias(){
-          ArrayList<Materia> materias = new ArrayList<>();
-          String sql = "SELECT * FROM materia";
+
+    public ArrayList<Materia> listarMaterias() {
+        ArrayList<Materia> materias = new ArrayList<>();
+        String sql = "SELECT * FROM materia";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-             Materia materia = new Materia();
-             materia.setIdMateria(rs.getInt("IdMateria"));
-             materia.setNombre(rs.getString("nombre"));
-            
+            while (rs.next()) {
+                Materia materia = new Materia();
+                materia.setIdMateria(rs.getInt("IdMateria"));
+                materia.setNombre(rs.getString("nombre"));
+
             }
+            ps.close();
+            rs.close();
             return materias;
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
             return null;
         }
-          
+
     }
-    
 
-    
-    
 }
-
-    
-    
-    
-

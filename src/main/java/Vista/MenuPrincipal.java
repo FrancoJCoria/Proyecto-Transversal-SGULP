@@ -14,25 +14,25 @@ import javax.swing.JInternalFrame;
  * @author LaMaquina
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipal.class.getName());
 
-    
     private final alumnoData alumnoData;
     private final materiaData materiaData;
     private final inscripcionData inscripcionData;
-    public MenuPrincipal(alumnoData alumnoData,materiaData materiaData, inscripcionData inscripcionData) {
+
+    public MenuPrincipal(alumnoData alumnoData, materiaData materiaData, inscripcionData inscripcionData) {
         initComponents();
-       this.alumnoData=alumnoData;
-       this.materiaData=materiaData;
-       this.inscripcionData=inscripcionData;
+        this.alumnoData = alumnoData;
+        this.materiaData = materiaData;
+        this.inscripcionData = inscripcionData;
     }
-    
-    public void abrirInternal(JInternalFrame nuevo){
+
+    public void abrirInternal(JInternalFrame nuevo) {
         for (JInternalFrame frame : Escritorio.getAllFrames()) {
             frame.dispose();
         }
-          Escritorio.add(nuevo);
+        Escritorio.add(nuevo);
         nuevo.setVisible(true);
     }
 
@@ -107,24 +107,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AlumnosMouseClicked
-        VistaAlumno va = new VistaAlumno(alumnoData);
+        VistaAlumno va  = new VistaAlumno(alumnoData);
         abrirInternal(va);
     }//GEN-LAST:event_AlumnosMouseClicked
 
     private void MateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MateriasMouseClicked
         VistaMateria vm = new VistaMateria(materiaData);
-        abrirInternal (vm);
+        abrirInternal(vm);
     }//GEN-LAST:event_MateriasMouseClicked
 
     private void InscripcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InscripcionesMouseClicked
-        VistaInscripcion vi = new VistaInscripcion(alumnoData,materiaData,inscripcionData);
-        abrirInternal (vi);
+        VistaInscripcion vi = new VistaInscripcion(alumnoData, materiaData, inscripcionData);
+        abrirInternal(vi);
     }//GEN-LAST:event_InscripcionesMouseClicked
 
-  
-    
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Alumnos;
     private javax.swing.JDesktopPane Escritorio;

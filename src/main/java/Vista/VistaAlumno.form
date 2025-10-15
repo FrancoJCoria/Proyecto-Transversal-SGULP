@@ -60,11 +60,7 @@
                                       <Component id="txtApellido" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtNombre" min="-2" pref="276" max="-2" attributes="0"/>
                                       <Component id="txtEstado" min="-2" pref="276" max="-2" attributes="0"/>
-
-
                                       <Component id="dateNacimiento" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-
-
                                   </Group>
                               </Group>
                           </Group>
@@ -117,9 +113,7 @@
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <Component id="dateNacimiento" min="-2" max="-2" attributes="0"/>
               </Group>
-
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEstado" alignment="3" min="-2" max="-2" attributes="0"/>

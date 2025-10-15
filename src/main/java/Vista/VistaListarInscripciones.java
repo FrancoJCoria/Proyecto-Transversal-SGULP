@@ -6,6 +6,7 @@ package Vista;
 
 import Modelo.Alumno;
 import Persistencia.alumnoData;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -20,6 +21,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
      * Creates new form VistaListarInscripciones
      */
    private alumnoData aData = new alumnoData();
+
     
     public VistaListarInscripciones(alumnoData alumnoData) {
         initComponents();

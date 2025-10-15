@@ -50,6 +50,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Alumnos = new javax.swing.JMenu();
         Materias = new javax.swing.JMenu();
         Inscripciones = new javax.swing.JMenu();
+        VerInscripciones = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +90,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(Inscripciones);
+
+        VerInscripciones.setText("Ver Inscripciones");
+        jMenuBar1.add(VerInscripciones);
 
         setJMenuBar(jMenuBar1);
 
@@ -130,6 +134,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane Escritorio;
     private javax.swing.JMenu Inscripciones;
     private javax.swing.JMenu Materias;
+    private javax.swing.JMenu VerInscripciones;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

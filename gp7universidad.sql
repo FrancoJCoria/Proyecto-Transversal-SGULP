@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-10-2025 a las 00:40:01
+-- Tiempo de generación: 16-10-2025 a las 23:35:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `gp7universidad`
 --
-CREATE DATABASE IF NOT EXISTS `gp7universidad` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `gp7universidad`;
 
 -- --------------------------------------------------------
 
@@ -43,8 +41,11 @@ CREATE TABLE `alumno` (
 --
 
 INSERT INTO `alumno` (`idAlumno`, `dni`, `apellido`, `nombre`, `fechaNacimiento`, `estado`) VALUES
-(52, 14801083, 'Coria', 'Alberto', '2004-10-11', 1),
-(53, 45801072, 'Coria', 'Franco', '2004-10-07', 1);
+(1, 45801072, 'Coria', 'Franco', '2004-06-07', 1),
+(2, 33848315, 'Lorenzo', 'Fernando', '1995-09-14', 1),
+(3, 44838273, 'Barzola', 'Juan', '2004-11-18', 1),
+(4, 33981232, 'Palma', 'Christian', '1978-06-12', 1),
+(5, 14035637, 'Leguizamon', 'Emiliano', '2000-02-14', 2);
 
 -- --------------------------------------------------------
 
@@ -54,10 +55,21 @@ INSERT INTO `alumno` (`idAlumno`, `dni`, `apellido`, `nombre`, `fechaNacimiento`
 
 CREATE TABLE `inscripcion` (
   `idInscripto` int(11) NOT NULL,
-  `nota` int(11) NOT NULL,
+  `nota` int(11) DEFAULT NULL,
   `idAlumno` int(11) NOT NULL,
   `idMateria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inscripcion`
+--
+
+INSERT INTO `inscripcion` (`idInscripto`, `nota`, `idAlumno`, `idMateria`) VALUES
+(16, NULL, 2, 11),
+(17, NULL, 2, 12),
+(21, NULL, 3, 13),
+(23, NULL, 3, 11),
+(24, NULL, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -77,7 +89,11 @@ CREATE TABLE `materia` (
 --
 
 INSERT INTO `materia` (`idMateria`, `nombre`, `año`, `estado`) VALUES
-(2, 'Matematicas', 2, 1);
+(10, 'Matematicas', 2, 1),
+(11, 'Lengua', 3, 1),
+(12, 'Programacion', 1, 2),
+(13, 'Arquitectura de Software', 5, 1),
+(14, 'Logica', 1, 2);
 
 --
 -- Índices para tablas volcadas
@@ -96,9 +112,11 @@ ALTER TABLE `alumno`
 --
 ALTER TABLE `inscripcion`
   ADD PRIMARY KEY (`idInscripto`),
+  ADD UNIQUE KEY `UQ_Alumno_Materia` (`idAlumno`,`idMateria`),
   ADD KEY `nota` (`nota`),
-  ADD KEY `idAlumno` (`idAlumno`),
-  ADD KEY `idMateria` (`idMateria`);
+  ADD KEY `idMateria` (`idMateria`) USING BTREE,
+  ADD KEY `idAlumno` (`idAlumno`,`idMateria`) USING BTREE,
+  ADD KEY `idInscripto` (`idInscripto`) USING BTREE;
 
 --
 -- Indices de la tabla `materia`
@@ -117,19 +135,19 @@ ALTER TABLE `materia`
 -- AUTO_INCREMENT de la tabla `alumno`
 --
 ALTER TABLE `alumno`
-  MODIFY `idAlumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `idAlumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `idInscripto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idInscripto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `materia`
 --
 ALTER TABLE `materia`
-  MODIFY `idMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas

@@ -11,6 +11,7 @@ import Persistencia.alumnoData;
 import Persistencia.inscripcionData;
 import Persistencia.materiaData;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class VistaInscripcion extends javax.swing.JInternalFrame {
@@ -41,8 +42,8 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             apellidoAlumnos.add(a.getApellido() + " - " + a.getIdAlumno());
         }
         
-        for (String rubro : apellidoAlumnos) {
-            alumnoComboBox.addItem(rubro);
+        for (String apellido : apellidoAlumnos) {
+            alumnoComboBox.addItem(apellido);
         }
     }
 
@@ -286,6 +287,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         ins.setIdInscripto(-1);
         
         inscripcionData.guardarInscripcion(ins);
+        JOptionPane.showMessageDialog(null, "La inscripcion se agrego exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         
     }//GEN-LAST:event_butInscribirActionPerformed
 

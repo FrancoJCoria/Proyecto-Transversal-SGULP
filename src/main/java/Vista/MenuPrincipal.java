@@ -50,7 +50,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Alumnos = new javax.swing.JMenu();
         Materias = new javax.swing.JMenu();
         Inscripciones = new javax.swing.JMenu();
-        VerInscripciones = new javax.swing.JMenu();
+        ListarInscripciones = new javax.swing.JMenu();
+        CargaNotas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,8 +92,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(Inscripciones);
 
-        VerInscripciones.setText("Ver Inscripciones");
-        jMenuBar1.add(VerInscripciones);
+        ListarInscripciones.setText("Listar Inscripciones");
+        ListarInscripciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ListarInscripcionesMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(ListarInscripciones);
+
+        CargaNotas.setText("Carga Notas");
+        CargaNotas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CargaNotasMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(CargaNotas);
 
         setJMenuBar(jMenuBar1);
 
@@ -125,13 +139,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
         abrirInternal(vi);
     }//GEN-LAST:event_InscripcionesMouseClicked
 
+    private void ListarInscripcionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListarInscripcionesMouseClicked
+        VistaListarInscripciones vli = new VistaListarInscripciones(alumnoData, inscripcionData);
+        abrirInternal(vli);
+    }//GEN-LAST:event_ListarInscripcionesMouseClicked
+
+    private void CargaNotasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargaNotasMouseClicked
+        VistaCargaDeNotas vcdn = new VistaCargaDeNotas(alumnoData, inscripcionData);
+        abrirInternal(vcdn);
+    }//GEN-LAST:event_CargaNotasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Alumnos;
+    private javax.swing.JMenu CargaNotas;
     private javax.swing.JDesktopPane Escritorio;
     private javax.swing.JMenu Inscripciones;
+    private javax.swing.JMenu ListarInscripciones;
     private javax.swing.JMenu Materias;
-    private javax.swing.JMenu VerInscripciones;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

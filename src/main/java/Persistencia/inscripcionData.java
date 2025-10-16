@@ -36,9 +36,8 @@ public class inscripcionData {
             ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
-            return;
+           
         }
-        JOptionPane.showMessageDialog(null, "La inscripcion se agrego exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
@@ -68,6 +67,37 @@ public class inscripcionData {
 
         return null;
     }
+    
+    
+    public Inscripcion buscarInscripcionPorIdAlumnoYIdMateria(int idAlumno,int idMateria) {
+        String sql = "SELECT * FROM inscripcion WHERE idAlumno= ? AND idMateria= ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            ps.setInt(2, idMateria);
+            ResultSet rs = ps.executeQuery();
+            Inscripcion inscripcion;
+            if (rs.next()) {
+                inscripcion = new Inscripcion();
+                inscripcion.setIdInscripto(rs.getInt("idInscripto"));
+                inscripcion.setNota(rs.getInt("nota"));
+                inscripcion.setIdAlumno(rs.getInt("idAlumno"));
+                inscripcion.setIdMateria(rs.getInt("idMateria"));
+                ps.executeQuery();
+                return inscripcion;
+            }
+            ps.close();
+            rs.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+
+        }
+
+        return null;
+    }
+    
+    
 
     public void borrarInscripcion(int idAlumno, int idMateria) {
         String sql = "DELETE FROM inscripcion WHERE idAlumno = ? AND idMateria = ?";
@@ -125,8 +155,35 @@ public class inscripcionData {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Materia materia = new Materia();
-                materia.setIdMateria(rs.getInt("IdMateria"));
+                materia.setIdMateria(rs.getInt("idMateria"));
                 materia.setNombre(rs.getString("nombre"));
+                materias.add(materia);
+            }
+            ps.close();
+            rs.close();
+            return materias;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la sentencia SQL " + ex.getMessage());
+            return null;
+        }
+    }
+    
+    public ArrayList<Materia> listarInscripciones(int idAlumno) {
+        ArrayList<Materia> materias = new ArrayList<>();
+
+        String sql = "SELECT m.idMateria, m.nombre, m.año, m.estado FROM inscripcion i, materia m "
+                + "WHERE i.idMateria = m.idMateria"
+                + " AND i.idAlumno = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Materia materia = new Materia();
+                materia.setIdMateria(rs.getInt("idMateria"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setAño(rs.getInt("año"));
+                materia.setEstado(rs.getBoolean("estado"));
                 materias.add(materia);
             }
             ps.close();

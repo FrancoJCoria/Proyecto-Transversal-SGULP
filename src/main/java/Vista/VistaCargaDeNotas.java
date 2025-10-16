@@ -4,17 +4,44 @@
  */
 package Vista;
 
+import Modelo.Alumno;
+import Modelo.Inscripcion;
+import Modelo.Materia;
+import Persistencia.alumnoData;
+import Persistencia.inscripcionData;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Fede-
  */
 public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VistaCargaDeNotas
-     */
-    public VistaCargaDeNotas() {
+    private alumnoData alumnoData;
+    private inscripcionData inscripcionData;
+
+    public VistaCargaDeNotas(alumnoData alumnoData, inscripcionData inscripcionData) {
         initComponents();
+        this.alumnoData = alumnoData;
+        this.inscripcionData = inscripcionData;
+        cargarAlumnos();
+    }
+
+    private void cargarAlumnos() {
+        BoxAlumno.removeAllItems();
+
+        ArrayList<String> apellidoAlumnos = new ArrayList<>();
+        ArrayList<Alumno> alumnos = alumnoData.listarAlumnos();
+
+        for (Alumno a : alumnos) {
+            apellidoAlumnos.add(a.getApellido() + " - " + a.getIdAlumno());
+        }
+
+        for (String apellido : apellidoAlumnos) {
+            BoxAlumno.addItem(apellido);
+        }
     }
 
     /**
@@ -28,12 +55,12 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
         jLab1Titlo = new javax.swing.JLabel();
         jLab2BscrAlmns = new javax.swing.JLabel();
-        jTextF1Dni = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTab1Alumnos = new javax.swing.JTable();
         jButt1Buscar = new javax.swing.JButton();
         jButt2GrdarCmbios = new javax.swing.JButton();
         jButtCnlar = new javax.swing.JButton();
+        BoxAlumno = new javax.swing.JComboBox<>();
 
         jLab1Titlo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLab1Titlo.setText("Carga De Notas De Alumnos");
@@ -42,15 +69,23 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
 
         jTab1Alumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Id Alumno", "dni", "Apellido", "nombre", "fechaNacimiento", "estado"
+                "IdMateria", "Nombre", "Año", "Estado", "Nota"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTab1Alumnos);
         if (jTab1Alumnos.getColumnModel().getColumnCount() > 0) {
             jTab1Alumnos.getColumnModel().getColumn(0).setResizable(false);
@@ -58,12 +93,21 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
             jTab1Alumnos.getColumnModel().getColumn(2).setResizable(false);
             jTab1Alumnos.getColumnModel().getColumn(3).setResizable(false);
             jTab1Alumnos.getColumnModel().getColumn(4).setResizable(false);
-            jTab1Alumnos.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jButt1Buscar.setText("Buscar");
+        jButt1Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButt1BuscarActionPerformed(evt);
+            }
+        });
 
-        jButt2GrdarCmbios.setText("Guardar Cambiios");
+        jButt2GrdarCmbios.setText("Guardar Cambios");
+        jButt2GrdarCmbios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButt2GrdarCmbiosActionPerformed(evt);
+            }
+        });
 
         jButtCnlar.setText("Cancelar");
 
@@ -74,7 +118,7 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(174, 174, 174)
                 .addComponent(jButt2GrdarCmbios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                 .addComponent(jButtCnlar)
                 .addGap(126, 126, 126))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -82,13 +126,13 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(144, 144, 144)
                 .addComponent(jLab2BscrAlmns)
-                .addGap(139, 139, 139)
-                .addComponent(jTextF1Dni, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(BoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(jButt1Buscar)
-                .addGap(16, 16, 16))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLab1Titlo)
@@ -101,8 +145,8 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLab2BscrAlmns)
-                    .addComponent(jTextF1Dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButt1Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButt1Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(75, 75, 75)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
@@ -115,8 +159,45 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButt1BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButt1BuscarActionPerformed
+        String alumnoSeleccionado = BoxAlumno.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        ArrayList<Materia> materiasInscriptas = inscripcionData.listarInscripciones(idAlumno);
+
+        DefaultTableModel modelo = (DefaultTableModel) jTab1Alumnos.getModel();
+        modelo.setRowCount(0);
+
+        for (Materia materia : materiasInscriptas) {
+            Object[] fila = {materia.getIdMateria(), materia.getNombre(), materia.getAño(), materia.isEstado()};
+            modelo.addRow(fila);
+        }
+    }//GEN-LAST:event_jButt1BuscarActionPerformed
+
+    private void jButt2GrdarCmbiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButt2GrdarCmbiosActionPerformed
+
+        if (jTab1Alumnos.isEditing()) {
+            jTab1Alumnos.getCellEditor().stopCellEditing();
+        }
+
+        int filaSeleccionada = jTab1Alumnos.getSelectedRow();
+        int nota = Integer.parseInt(jTab1Alumnos.getValueAt(filaSeleccionada, 4).toString());
+        int idMateria = Integer.parseInt(jTab1Alumnos.getValueAt(filaSeleccionada, 0).toString());
+        String alumnoSeleccionado = BoxAlumno.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        Inscripcion inscripcion = inscripcionData.buscarInscripcionPorIdAlumnoYIdMateria(idAlumno, idMateria);
+        inscripcion.setNota(nota);
+        inscripcionData.guardarInscripcion(inscripcion);
+        JOptionPane.showMessageDialog(null, "La nota se agrego correctamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_jButt2GrdarCmbiosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> BoxAlumno;
     private javax.swing.JButton jButt1Buscar;
     private javax.swing.JButton jButt2GrdarCmbios;
     private javax.swing.JButton jButtCnlar;
@@ -124,6 +205,5 @@ public class VistaCargaDeNotas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLab2BscrAlmns;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTab1Alumnos;
-    private javax.swing.JTextField jTextF1Dni;
     // End of variables declaration//GEN-END:variables
 }

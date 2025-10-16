@@ -28,10 +28,21 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="InscripcionesMouseClicked"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="VerInscripciones">
+        <Menu class="javax.swing.JMenu" name="ListarInscripciones">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ver Inscripciones"/>
+            <Property name="text" type="java.lang.String" value="Listar Inscripciones"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ListarInscripcionesMouseClicked"/>
+          </Events>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="CargaNotas">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Carga Notas"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="CargaNotasMouseClicked"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>

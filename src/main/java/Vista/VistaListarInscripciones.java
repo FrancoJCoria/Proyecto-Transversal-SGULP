@@ -5,11 +5,13 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Materia;
 import Persistencia.alumnoData;
-
-import javax.swing.JOptionPane;
+import Persistencia.inscripcionData;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
+
+
 
 /**
  *
@@ -20,30 +22,32 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     /**
      * Creates new form VistaListarInscripciones
      */
-   private alumnoData aData = new alumnoData();
-
+   private alumnoData alumnoData;
+   private inscripcionData inscripcionData;
     
-    public VistaListarInscripciones(alumnoData alumnoData) {
+    public VistaListarInscripciones(alumnoData alumnoData,inscripcionData inscripcionData) {
         initComponents();
+        this.alumnoData=alumnoData;
+        this.inscripcionData=inscripcionData;
         cargarAlumnos();
-       
+        
     }
     
-     private void cargarAlumnos() {
-        try {
-            
-            List<Alumno> alumnos = aData.listarAlumnos();
-            BoxAlumno.removeAllItems();
-            
-            for (Alumno a : alumnos) {
-                BoxAlumno.addItem(a);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar alumnos: " + e.getMessage());
+      private void cargarAlumnos() {
+        BoxAlumno.removeAllItems();
+        
+        ArrayList<String> apellidoAlumnos = new ArrayList<>();
+        ArrayList<Alumno> alumnos = alumnoData.listarAlumnos();
+        
+        for (Alumno a : alumnos) {
+            apellidoAlumnos.add(a.getApellido() + " - " + a.getIdAlumno());
         }
-
+        
+        for (String apellido : apellidoAlumnos) {
+            BoxAlumno.addItem(apellido);
+        }
     }
+    
 
 
     /**
@@ -65,6 +69,11 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
 
         ButVerInscripciones.setText("Ver Inscripciones");
+        ButVerInscripciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButVerInscripcionesActionPerformed(evt);
+            }
+        });
 
         BoxAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,7 +91,15 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
             new String [] {
                 "IdMateria", "Materia", "Año", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaInscripciones);
 
         ButCerrar.setText("Cerrar");
@@ -92,7 +109,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
             }
         });
 
-        ButLimpiar.setText("Limpir");
+        ButLimpiar.setText("Limpiar");
         ButLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ButLimpiarActionPerformed(evt);
@@ -102,7 +119,6 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         jLabel1.setText("Alumno:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Lista de Inscripciones");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -113,7 +129,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ButVerInscripciones)
                 .addGap(55, 55, 55))
@@ -163,11 +179,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_ButLimpiarActionPerformed
 
     private void BoxAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxAlumnoActionPerformed
-        // TODO add your handling code here:
-            Alumno seleccionado = (Alumno) BoxAlumno.getSelectedItem();
-        if (seleccionado != null) {
-            System.out.println("Alumno seleccionado: " + seleccionado.getApellido() + ", " + seleccionado.getNombre());
-        }  
+        
     }//GEN-LAST:event_BoxAlumnoActionPerformed
 
     private void ButCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButCerrarActionPerformed
@@ -175,9 +187,25 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_ButCerrarActionPerformed
 
+    private void ButVerInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButVerInscripcionesActionPerformed
+     String alumnoSeleccionado = BoxAlumno.getSelectedItem().toString();
+        String[] partes = alumnoSeleccionado.split(" - ");
+        String txtIdAlumno = partes[1];
+        int idAlumno = Integer.parseInt(txtIdAlumno);
+        ArrayList<Materia> materiasInscriptas = inscripcionData.listarInscripciones(idAlumno);
+        
+        DefaultTableModel modelo = (DefaultTableModel) tablaInscripciones.getModel();
+        modelo.setRowCount(0);
+        
+        for (Materia materia : materiasInscriptas) {
+            Object[] fila = {materia.getIdMateria(), materia.getNombre(),materia.getAño(),materia.isEstado()};
+            modelo.addRow(fila);
+        }
+    }//GEN-LAST:event_ButVerInscripcionesActionPerformed
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<Alumno> BoxAlumno;
+    private javax.swing.JComboBox<String> BoxAlumno;
     private javax.swing.JButton ButCerrar;
     private javax.swing.JButton ButLimpiar;
     private javax.swing.JButton ButVerInscripciones;
